@@ -5,7 +5,6 @@
     <title>CryptoZombies front-end</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script language="javascript" type="text/javascript" src="web3.min.js"></script>
-    ///Instantiate myContract
     <script language="javascript" type="text/javascript" src="cryptozombies_abi.js"></script>
   </head>
   <body>
@@ -66,16 +65,28 @@
         });
       }
       function feedOnKitty(zombieId, kittyId) {
-        // Como esto va a tardar un poco, vamos a actualizar la UI cuando la transacción
-        // se haya completado correctamente.
         $("#txStatus").text("Eating a kitty. This may take a while...");
-        // Enviar el texto a nuestro contrato:
         return cryptoZombies.methods.feedOnKitty(zombieId, kittyId)
         .send({ from: userAccount })
         .on("receipt", function(receipt) {
           $("#txStatus").text("Ate a kitty and spawned a new Zombie!");
-          // Si la transacción es aceptada por la blockchain, vamos a redibujar la UI
           getZombiesByOwner(userAccount).then(displayZombies);
+        })
+        .on("error", function(error) {
+          // Si la transacción no se produce correctamente, vamos a mostrar por pantalla el error
+          $("#txStatus").text(error);
+        });
+      }
+      function levelUp(zombieId) {
+        // Como esto va a tardar un poco, vamos a actualizar la UI cuando la transacción
+        // se haya completado correctamente.
+        $("#txStatus").text("Leveling up your zombie...");
+        // Enviar el texto a nuestro contrato:
+        return cryptoZombies.methods.levelUp(zombieId)
+        .send({ from: userAccount, value: web3js.utils.toWei("0.001", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Power overwhelming! Zombie successfully leveled up");
+          // Si la transacción es aceptada por la blockchain, vamos a redibujar la UI
         })
         .on("error", function(error) {
           // Si la transacción no se produce correctamente, vamos a mostrar por pantalla el error
