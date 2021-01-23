@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CryptoZombies front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+
+  </head>
+  <body>
+    <script>
+      window.addEventListener('load', function() {
+      // We are checking here if Web3 has been inyected by the browser (Mist/Metamask)
+        if (typeof web3 !== 'undefined') {
+          // Usar el proveedor Mist/MetaMask
+          web3js = new Web3(web3.currentProvider);
+        } else {
+          // this will be activated if the user has Mist/Metamask installed. 
+          // it would be recommended to alert to the user to install Misk/Metamask
+          // in order to use our DApp.
+       }
+       // now you can freely start your DApp and access to Web3.js:
+       startApp()
+      })
+    </script>
+  </body>
+</html>
